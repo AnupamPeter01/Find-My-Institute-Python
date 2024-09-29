@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institute Eligibility Checker</title>
+</head>
+<body>
+    <h1>Check Eligible Institutes</h1>
+    <form method="post" action="/eligible_institutes">
+        <label for="gender">Select Gender:</label>
+        <select id="gender" name="gender">
+            <option value="Gender-Neutral">Gender-Neutral</option>
+            <option value="Female-only (including Supernumerary)">Female only</option>
+        </select><br><br>
+
+        <label for="seat_type">Select Seat-Type:</label>
+        <select id="seat_type" name="seat_type">
+            <option value="OBC-NCL">OBC-NCL</option>
+            <option value="OBC-NCL (PwD)">OBC-NCL(PwD)</option>
+            <option value="OPEN">OPEN</option>
+        </select><br><br>
+
+        <label for="program_name">Program Name:</label>
+        <input type="text" id="program_name" name="program_name"><br><br>
+
+        <label for="rank">Rank:</label>
+        <input type="number" id="rank" name="rank"><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
