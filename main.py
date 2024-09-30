@@ -35,14 +35,16 @@ async def eligible_institutes(
         rank: int = Form(...),
         db: Session = Depends(get_db)
 ):
+
+    levity_factor=0.1
     # Query the database for eligible institutes
     query = select(institutes_table.c.institute_name).where(
         and_(
             institutes_table.c.gender == gender,
             institutes_table.c.seat_type == seat_type,
             institutes_table.c.program_name == program_name,
-            institutes_table.c.opening_rank <= rank,
-            institutes_table.c.closing_rank >= rank
+            institutes_table.c.opening_rank * (1 - levity_factor) <= rank,
+            institutes_table.c.closing_rank * (1 + levity_factor) >= rank
         )
     )
     result = db.execute(query).fetchall()
