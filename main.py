@@ -2,7 +2,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi import FastAPI, Depends, HTTPException,Form
 from sqlalchemy.orm import Session
-from sqlalchemy import select, and_
+from sqlalchemy import select, and_,or_
 from database import SessionLocal, institutes_table
 from starlette.requests import Request
 
@@ -36,11 +36,22 @@ async def eligible_institutes(
         db: Session = Depends(get_db)
 ):
 
+    global gender_condition
     levity_factor=0.1
+
+    # Condition to handle gender selection
+    if gender == 'male':
+        gender_condition = institutes_table.c.gender == 'Gender-Neutral'
+    elif gender == 'female':
+        gender_condition = or_(
+            institutes_table.c.gender == 'Gender-Neutral',
+            institutes_table.c.gender == 'Female-only (including Supernumerary)'
+        )
+
     # Query the database for eligible institutes
     query = select(institutes_table.c.institute_name).where(
         and_(
-            institutes_table.c.gender == gender,
+            gender_condition,
             institutes_table.c.seat_type == seat_type,
             institutes_table.c.program_name == program_name,
             institutes_table.c.opening_rank * (1 - levity_factor) <= rank,
